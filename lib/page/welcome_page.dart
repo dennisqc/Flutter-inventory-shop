@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopflutter/page/signup_page.dart';
 import 'package:shopflutter/page/singin_page.dart';
+import 'package:shopflutter/styles.dart';
 import 'package:shopflutter/widgets/custom_scaffold.dart';
 import 'package:shopflutter/widgets/welcome_button.dart';
 
@@ -51,7 +52,7 @@ class WelcomePage extends StatelessWidget {
                         ButtonText: "iniciar sesion",
                         onTap: SinginPage(),
                         color: Colors.white,
-                        TextColor: Colors.red,
+                        TextColor: lightColorScheme.primary,
                       ),
                     ),
                   ],
