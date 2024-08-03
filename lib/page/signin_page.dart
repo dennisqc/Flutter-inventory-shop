@@ -3,14 +3,14 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:shopflutter/styles.dart';
 import 'package:shopflutter/widgets/custom_scaffold.dart';
 
-class SinginPage extends StatefulWidget {
-  const SinginPage({super.key});
+class SigninPage extends StatefulWidget {
+  const SigninPage({super.key});
 
   @override
-  State<SinginPage> createState() => _SinginPageState();
+  State<SigninPage> createState() => _SigninPageState();
 }
 
-class _SinginPageState extends State<SinginPage> {
+class _SigninPageState extends State<SigninPage> {
   final _formSignInKey = GlobalKey<FormState>();
   bool rememberPassword = true;
   @override
@@ -41,7 +41,7 @@ class _SinginPageState extends State<SinginPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "Welcome Back",
+                            "Iniciar Sesión ",
                             style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.w900,
@@ -50,13 +50,13 @@ class _SinginPageState extends State<SinginPage> {
                           TextFormField(
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter Email';
+                                return 'Ingrese su Correo Electronico';
                               }
                               return null;
                             },
                             decoration: InputDecoration(
-                              label: const Text('Email'),
-                              hintText: 'Enter Email',
+                              label: const Text('Correo Electronico'),
+                              hintText: 'Ingrese Correo electronico',
                               hintStyle: const TextStyle(
                                 color: Colors.black26,
                               ),
@@ -82,13 +82,13 @@ class _SinginPageState extends State<SinginPage> {
                             obscuringCharacter: '*',
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter Password';
+                                return 'Ingrese su contraseña';
                               }
                               return null;
                             },
                             decoration: InputDecoration(
-                              label: const Text('Password'),
-                              hintText: 'Enter Password',
+                              label: const Text('Contraseña'),
+                              hintText: 'Ingrese su contraseña',
                               hintStyle: const TextStyle(
                                 color: Colors.black26,
                               ),
@@ -133,7 +133,7 @@ class _SinginPageState extends State<SinginPage> {
                               ),
                               GestureDetector(
                                 child: Text(
-                                  'Forget password?',
+                                  'Olvido su contraseña?',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: lightColorScheme.primary,
@@ -161,8 +161,11 @@ class _SinginPageState extends State<SinginPage> {
                                   );
                                 }
                               },
-                              child: const Text('Sign up'),
+                              child: const Text('Iniciar Sesion'),
                             ),
+                          ),
+                          const SizedBox(
+                            height: 25.0,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -192,6 +195,8 @@ class _SinginPageState extends State<SinginPage> {
                                 ),
                               ),
                             ],
+                          ), const SizedBox(
+                            height: 25.0,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopflutter/page/signup_page.dart';
 
 class WelcomeButton extends StatelessWidget {
   const WelcomeButton(
