@@ -43,7 +43,7 @@ class _SignupPageState extends State<SignupPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Get Started',
+                        'Registrate',
                         style: TextStyle(
                           fontSize: 30.0,
                           fontWeight: FontWeight.w900,
@@ -56,13 +56,13 @@ class _SignupPageState extends State<SignupPage> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Full name';
+                            return 'Por favor ingrese sus nombres completos';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          label: const Text('Full Name'),
-                          hintText: 'Enter Full Name',
+                          label: const Text('Nombre y apellido'),
+                          hintText: 'Ingrese sus datos',
                           hintStyle: const TextStyle(
                             color: Colors.black26,
                           ),
@@ -86,13 +86,13 @@ class _SignupPageState extends State<SignupPage> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Email';
+                            return 'Por favor ingrese su correo electronico';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          label: const Text('Email'),
-                          hintText: 'Enter Email',
+                          label: const Text('Correo electronico'),
+                          hintText: 'Ingrese su Correo Electronico',
                           hintStyle: const TextStyle(
                             color: Colors.black26,
                           ),
@@ -118,13 +118,13 @@ class _SignupPageState extends State<SignupPage> {
                         obscuringCharacter: '*',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Password';
+                            return 'Por favor ingrese su Contraseña';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          label: const Text('Password'),
-                          hintText: 'Enter Password',
+                          label: const Text('Contraseña'),
+                          hintText: 'Ingrese Contraseña',
                           hintStyle: const TextStyle(
                             color: Colors.black26,
                           ),
@@ -235,9 +235,9 @@ class _SignupPageState extends State<SignupPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Brand(Brands.facebook),
-                          Brand(Brands.twitterx),
+                          // Brand(Brands.twitterx),
                           Brand(Brands.google),
-                          Brand(Brands.apple_logo),
+                          // Brand(Brands.apple_logo),
                         ],
                       ),
                       const SizedBox(
