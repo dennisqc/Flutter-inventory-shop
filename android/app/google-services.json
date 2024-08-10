@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "889299481777",
+    "project_id": "shopflutter-f6c82",
+    "storage_bucket": "shopflutter-f6c82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:889299481777:android:5ba53265325edf9fdf5e90",
+        "android_client_info": {
+          "package_name": "com.tiendaonlinea.shopflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "889299481777-3eeb5dqjstvd5kmd6ikp8qg5obr0r52d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkUGWH4bbbyOnr0klC4cXR4861I_gC1vo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "889299481777-3eeb5dqjstvd5kmd6ikp8qg5obr0r52d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

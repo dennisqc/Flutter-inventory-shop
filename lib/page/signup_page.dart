@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:shopflutter/page/signin_page.dart';
@@ -13,6 +14,52 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formSignupKey = GlobalKey<FormState>();
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _correoController = TextEditingController();
+  final TextEditingController _contrasenaController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isLoading = false;
+  String _errorMessage = '';
+
+  Future<void> createAccount() async {
+    final email = _correoController.text.trim();
+    final password = _contrasenaController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() {
+        _errorMessage = "Correo y contraseña no pueden estar vacíos.";
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
+
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      print("Cuenta creada con éxito: ${userCredential.user}");
+      setState(() {
+        _errorMessage = "Cuenta creada con éxito.";
+      });
+    } catch (e) {
+      print("Error al crear la cuenta: ${e.toString()}");
+      setState(() {
+        _errorMessage = "Error al crear la cuenta: ${e.toString()}";
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   bool agreePersonalData = true;
   @override
   Widget build(BuildContext context) {
@@ -54,6 +101,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 40.0,
                       ),
                       TextFormField(
+                        controller: _nameController,  // Asignar controlador
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese sus nombres completos';
@@ -84,6 +132,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 25.0,
                       ),
                       TextFormField(
+                        controller: _correoController,  // Asignar controlador
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese su correo electronico';
@@ -114,6 +163,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 25.0,
                       ),
                       TextFormField(
+                        controller: _contrasenaController,  // Asignar controlador
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) {
@@ -174,31 +224,40 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formSignupKey.currentState!.validate() &&
-                                agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
-                                ),
-                              );
-                            } else if (!agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Please agree to the processing of personal data')),
-                              );
-                            }
-                          },
-                          child: const Text('Sign up'),
+                      if (_isLoading)
+                        const CircularProgressIndicator()  // Indicador de carga
+                      else
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formSignupKey.currentState!.validate() &&
+                                  agreePersonalData) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Processing Data'),
+                                  ),
+                                );
+                                createAccount();
+                              } else if (!agreePersonalData) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'Please agree to the processing of personal data')),
+                                );
+                              }
+                            },
+                            child: const Text('Sign up'),
+                          ),
                         ),
-                      ),
                       const SizedBox(
                         height: 30.0,
                       ),
+                      if (_errorMessage.isNotEmpty)
+                        Text(
+                          _errorMessage,
+                          style: TextStyle(color: Colors.red),
+                        ),  // Mostrar mensaje de error
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
