@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:shopflutter/page/signin_page.dart';
 import 'package:shopflutter/styles.dart';
 import 'package:shopflutter/widgets/custom_scaffold.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shopflutter/widgets/google_sign.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -25,10 +29,11 @@ class _SignupPageState extends State<SignupPage> {
   Future<void> createAccount() async {
     final email = _correoController.text.trim();
     final password = _contrasenaController.text.trim();
+    final name = _nameController.text.trim();
 
-    if (email.isEmpty || password.isEmpty) {
+    if (email.isEmpty || password.isEmpty || name.isEmpty) {
       setState(() {
-        _errorMessage = "Correo y contraseña no pueden estar vacíos.";
+        _errorMessage = "Nombre, correo y contraseña no pueden estar vacíos.";
       });
       return;
     }
@@ -44,7 +49,21 @@ class _SignupPageState extends State<SignupPage> {
         email: email,
         password: password,
       );
+
+      // Almacena el nombre del usuario en Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'name': name,
+        'email': email,
+      });
+
       print("Cuenta creada con éxito: ${userCredential.user}");
+
+      // Limpiar los campos después de crear la cuenta
+      clearFields();
+
       setState(() {
         _errorMessage = "Cuenta creada con éxito.";
       });
@@ -60,7 +79,14 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
+  void clearFields() {
+    _nameController.clear();
+    _correoController.clear();
+    _contrasenaController.clear();
+  }
+
   bool agreePersonalData = true;
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -101,7 +127,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 40.0,
                       ),
                       TextFormField(
-                        controller: _nameController,  // Asignar controlador
+                        controller: _nameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese sus nombres completos';
@@ -132,7 +158,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 25.0,
                       ),
                       TextFormField(
-                        controller: _correoController,  // Asignar controlador
+                        controller: _correoController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese su correo electronico';
@@ -163,7 +189,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 25.0,
                       ),
                       TextFormField(
-                        controller: _contrasenaController,  // Asignar controlador
+                        controller: _contrasenaController,
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) {
@@ -225,7 +251,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 25.0,
                       ),
                       if (_isLoading)
-                        const CircularProgressIndicator()  // Indicador de carga
+                        const CircularProgressIndicator()
                       else
                         SizedBox(
                           width: double.infinity,
@@ -257,7 +283,7 @@ class _SignupPageState extends State<SignupPage> {
                         Text(
                           _errorMessage,
                           style: TextStyle(color: Colors.red),
-                        ),  // Mostrar mensaje de error
+                        ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -293,10 +319,8 @@ class _SignupPageState extends State<SignupPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Brand(Brands.facebook),
-                          // Brand(Brands.twitterx),
-                          Brand(Brands.google),
-                          // Brand(Brands.apple_logo),
+                          GestureDetector(child: Brand(Brands.facebook)),
+                          GoogleSign(),
                         ],
                       ),
                       const SizedBox(
