@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:shopflutter/styles.dart';
+import 'package:shopflutter/styles/styles.dart';
 import 'package:shopflutter/widgets/custom_scaffold.dart';
 
 class SigninPage extends StatefulWidget {

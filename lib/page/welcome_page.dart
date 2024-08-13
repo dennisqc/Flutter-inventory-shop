@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shopflutter/page/signin_page.dart';
-import 'package:shopflutter/page/signup_page.dart';
-import 'package:shopflutter/styles.dart';
+import 'package:shopflutter/loggin/signin_page.dart';
+import 'package:shopflutter/loggin/signup_page.dart';
+import 'package:shopflutter/styles/styles.dart';
 import 'package:shopflutter/widgets/custom_scaffold.dart';
 import 'package:shopflutter/widgets/welcome_button.dart';
 

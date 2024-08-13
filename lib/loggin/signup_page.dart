@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:shopflutter/page/signin_page.dart';
-import 'package:shopflutter/styles.dart';
+import 'package:shopflutter/loggin/signin_page.dart';
+import 'package:shopflutter/styles/styles.dart';
 import 'package:shopflutter/widgets/custom_scaffold.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
