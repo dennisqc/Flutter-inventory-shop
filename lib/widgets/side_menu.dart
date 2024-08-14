@@ -14,19 +14,29 @@ class _SideMenuState extends State<SideMenu> {
   Widget build(BuildContext context) {
     return NavigationDrawer(
       selectedIndex: navDrawerIndex,
-      backgroundColor: Colors.blueGrey[800],
       onDestinationSelected: (value) {
         setState(() {
           navDrawerIndex = value;
         });
       },
       children: [
+        
+        UserAccountsDrawerHeader(
+          accountName: Text("Nombre de Usuario"),
+          accountEmail: Text("usuario@correo.com"),
+          currentAccountPicture: CircleAvatar(
+            backgroundImage: NetworkImage(
+                "https://dthezntil550i.cloudfront.net/f4/latest/f41908291942413280009640715/1280_960/1b2d9510-d66d-43a2-971a-cfcbb600e7fe.png"), // Reemplaza con la URL de la imagen de perfil
+          ),
+          decoration: BoxDecoration(
+            color: Colors.blueGrey[800], // Cambia el color de fondo del header
+          ),
+        ),
         Padding(
           padding: EdgeInsets.fromLTRB(28, 20, 26, 10),
           child: Text("main"),
         ),
         NavigationDrawerDestination(
-      
           icon: Icon(Icons.add),
           label: Text("data"),
         ),
@@ -43,13 +53,9 @@ class _SideMenuState extends State<SideMenu> {
           label: Text("data"),
         ),
         Padding(padding: EdgeInsets.fromLTRB(28, 10, 16, 10), child: Divider()),
-        Padding(
-          padding: EdgeInsets.fromLTRB(28, 10, 16, 10),
-          child: Text('More op'),
-        ),
         NavigationDrawerDestination(
           icon: Icon(Icons.logout_outlined),
-          label: Text("Cerrar sesion"),
+          label: Text("Cerrar sesión"),
         ),
       ],
     );
