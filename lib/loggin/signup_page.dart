@@ -50,7 +50,6 @@ class _SignupPageState extends State<SignupPage> {
         password: password,
       );
 
-      // Almacena el nombre del usuario en Firestore
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.user!.uid)
@@ -61,7 +60,6 @@ class _SignupPageState extends State<SignupPage> {
 
       print("Cuenta creada con éxito: ${userCredential.user}");
 
-      // Limpiar los campos después de crear la cuenta
       clearFields();
 
       setState(() {

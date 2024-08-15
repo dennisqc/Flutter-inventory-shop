@@ -11,7 +11,8 @@ class ListProductItem extends StatefulWidget {
 
 class _ListProductItemState extends State<ListProductItem> {
   List<ProductModel> products = [];
-  final ProductSelect productService = ProductSelect(baseUrl: 'http://10.0.2.2:5000'); // Para emulador de Android
+  final ProductSelect productService =
+      ProductSelect(baseUrl: 'http://10.0.2.2:5000');
 
   @override
   void initState() {
@@ -37,14 +38,74 @@ class _ListProductItemState extends State<ListProductItem> {
         title: Text('Product List'),
       ),
       body: products.isEmpty
-          ? Center(child: CircularProgressIndicator()) // Mostrar indicador de carga
-          : ListView.builder(
+          ? Center(child: CircularProgressIndicator())
+          : GridView.builder(
+              padding: EdgeInsets.all(8),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Número de columnas en la cuadrícula
+                childAspectRatio: 0.7, // Relación de aspecto de cada elemento
+                crossAxisSpacing: 8, // Espacio horizontal entre los elementos
+                mainAxisSpacing: 8, // Espacio vertical entre los elementos
+              ),
               itemCount: products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
-                return ListTile(
-                  title: Text(product.nombre),
-                  subtitle: Text('Price: \$${product.precioVenta}'),
+                return Card(
+                  elevation: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: product.urlImage.isNotEmpty
+                              ? Image.network(
+                                  product.urlImage,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height:
+                                      150, // Ajustar la altura para agrandar la imagen
+                                )
+                              : Icon(
+                                  Icons.shopping_bag,
+                                  size: 80,
+                                  color: Colors.grey[300],
+                                ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          product.nombre,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          product.descripcion,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'Price: \$${product.precioVenta.toStringAsFixed(2)}',
+                        ),
+                        SizedBox(height: 8),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Acción del botón, como agregar al carrito o ver detalles
+                            print('Clicked on ${product.nombre}');
+                          },
+                          child: Text('Add to Cart'),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(double.infinity,
+                                36), // Hacer que el botón ocupe todo el ancho
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
             ),

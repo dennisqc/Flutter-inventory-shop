@@ -6,6 +6,8 @@ class ProductModel {
   final double precioVenta;
   final int cantidadEnStock;
   final String fechaCreacion;
+  final String urlImage;
+  final String sku;
 
   ProductModel({
     required this.productoID,
@@ -15,15 +17,15 @@ class ProductModel {
     required this.precioVenta,
     required this.cantidadEnStock,
     required this.fechaCreacion,
+    required this.urlImage,
+    required this.sku,
   });
 
-  // Factory constructor to create a Product instance from a JSON object
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
       productoID: json['ProductoID'],
       nombre: json['Nombre'],
       descripcion: json['Descripcion'],
-      // Manejar el caso donde el valor podría ser una cadena
       precioCompra: (json['PrecioCompra'] is String
           ? double.parse(json['PrecioCompra'])
           : json['PrecioCompra'].toDouble()),
@@ -32,10 +34,11 @@ class ProductModel {
           : json['PrecioVenta'].toDouble()),
       cantidadEnStock: json['CantidadEnStock'],
       fechaCreacion: json['FechaCreacion'],
+      urlImage: json['urlImage'],
+      sku: json['sku'],
     );
   }
 
-  // Method to convert a Product instance to JSON format
   Map<String, dynamic> toJson() {
     return {
       'ProductoID': productoID,
@@ -45,6 +48,8 @@ class ProductModel {
       'PrecioVenta': precioVenta,
       'CantidadEnStock': cantidadEnStock,
       'FechaCreacion': fechaCreacion,
+      'sku': sku,
+      'urlImage': urlImage,
     };
   }
 }

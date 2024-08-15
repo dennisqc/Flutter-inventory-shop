@@ -22,7 +22,7 @@ class CustomScaffold extends StatelessWidget {
             height: double.infinity,
           ),
           Container(
-            color: Colors.black.withOpacity(0.2), // Fondo semitransparente para mejorar la visibilidad del texto
+            color: Colors.black.withOpacity(0.2),
             width: double.infinity,
             height: double.infinity,
           ),
