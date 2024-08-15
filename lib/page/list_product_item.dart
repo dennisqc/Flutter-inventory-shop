@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopflutter/api/product_select.dart';
 import 'package:shopflutter/models/product_model.dart';
+import 'package:shopflutter/widgets/side_menu.dart';
 
 class ListProductItem extends StatefulWidget {
   const ListProductItem({super.key});
@@ -35,7 +36,8 @@ class _ListProductItemState extends State<ListProductItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product List'),
+        title: Text("Inventory Page"),
+        backgroundColor: Colors.blueGrey,
       ),
       body: products.isEmpty
           ? Center(child: CircularProgressIndicator())
@@ -109,6 +111,7 @@ class _ListProductItemState extends State<ListProductItem> {
                 );
               },
             ),
+      drawer: SideMenu(),
     );
   }
 }
