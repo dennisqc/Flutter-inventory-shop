@@ -20,7 +20,6 @@ class _SideMenuState extends State<SideMenu> {
         });
       },
       children: [
-        
         UserAccountsDrawerHeader(
           accountName: Text("Nombre de Usuario"),
           accountEmail: Text("usuario@correo.com"),
