@@ -25,10 +25,10 @@ class _SideMenuState extends State<SideMenu> {
           accountEmail: Text("usuario@correo.com"),
           currentAccountPicture: CircleAvatar(
             backgroundImage: NetworkImage(
-                "https://dthezntil550i.cloudfront.net/f4/latest/f41908291942413280009640715/1280_960/1b2d9510-d66d-43a2-971a-cfcbb600e7fe.png"), // Reemplaza con la URL de la imagen de perfil
+                "https://dthezntil550i.cloudfront.net/f4/latest/f41908291942413280009640715/1280_960/1b2d9510-d66d-43a2-971a-cfcbb600e7fe.png"), 
           ),
           decoration: BoxDecoration(
-            color: Colors.blueGrey[800], // Cambia el color de fondo del header
+            color: Colors.blueGrey[800], 
           ),
         ),
         Padding(

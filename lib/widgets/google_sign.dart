@@ -10,31 +10,28 @@ class GoogleSign extends StatelessWidget {
 
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
-      // Inicia el proceso de autenticación con Google
+ 
       GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
       if (googleSignInAccount == null) {
-        // Si la cuenta es nula, significa que el usuario canceló la autenticación
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Autenticación con Google cancelada')),
         );
         return;
       }
 
-      // Obtiene la autenticación de Google
       GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount.authentication;
 
-      // Credenciales de Firebase
       AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
 
-      // Inicia sesión con las credenciales de Firebase
       User? user = (await _auth.signInWithCredential(credential)).user;
 
       if (user != null) {
-        // Navega a la página principal si la autenticación fue exitosa
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -43,7 +40,7 @@ class GoogleSign extends StatelessWidget {
         );
       }
     } catch (e) {
-      // Manejo de errores durante la autenticación
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error de inicio de sesión con Google: $e')),
       );

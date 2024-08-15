@@ -10,10 +10,10 @@ class InventoryPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Inventory Page"),
-        backgroundColor: Colors.blueGrey, // Cambia el color del AppBar si lo deseas
+        backgroundColor: Colors.blueGrey,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0), // Añade un padding para un mejor diseño
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -22,16 +22,13 @@ class InventoryPage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
-            ProductWidget(), // Incluye el widget del producto
-            // Puedes añadir más widgets aquí si es necesario
+            ProductWidget(),
           ],
         ),
       ),
-      drawer: SideMenu(), // Incluye el menú lateral
+      drawer: SideMenu(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Acción que deseas realizar al presionar el botón
-        },
+        onPressed: () {},
         backgroundColor: Colors.blueGrey,
         child: Icon(Icons.add_shopping_cart),
       ),

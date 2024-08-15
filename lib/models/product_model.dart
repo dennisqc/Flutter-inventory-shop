@@ -23,8 +23,13 @@ class ProductModel {
       productoID: json['ProductoID'],
       nombre: json['Nombre'],
       descripcion: json['Descripcion'],
-      precioCompra: json['PrecioCompra'].toDouble(),
-      precioVenta: json['PrecioVenta'].toDouble(),
+      // Manejar el caso donde el valor podría ser una cadena
+      precioCompra: (json['PrecioCompra'] is String
+          ? double.parse(json['PrecioCompra'])
+          : json['PrecioCompra'].toDouble()),
+      precioVenta: (json['PrecioVenta'] is String
+          ? double.parse(json['PrecioVenta'])
+          : json['PrecioVenta'].toDouble()),
       cantidadEnStock: json['CantidadEnStock'],
       fechaCreacion: json['FechaCreacion'],
     );
