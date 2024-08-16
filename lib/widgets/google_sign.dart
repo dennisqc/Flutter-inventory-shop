@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:shopflutter/page/inventory_page.dart';
+import 'package:shopflutter/page/list_product_item.dart';
 
 class GoogleSign extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,10 +11,8 @@ class GoogleSign extends StatelessWidget {
 
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
- 
       GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
       if (googleSignInAccount == null) {
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Autenticación con Google cancelada')),
         );
@@ -31,16 +30,14 @@ class GoogleSign extends StatelessWidget {
       User? user = (await _auth.signInWithCredential(credential)).user;
 
       if (user != null) {
-
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InventoryPage(),
+            builder: (context) => ListProductItem(),
           ),
         );
       }
     } catch (e) {
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error de inicio de sesión con Google: $e')),
       );

@@ -22,7 +22,7 @@ class InventoryPage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
-            ProductWidget(),
+            // ProductWidget(),
           ],
         ),
       ),

@@ -8,6 +8,8 @@ class ProductModel {
   final String fechaCreacion;
   final String urlImage;
   final String sku;
+  final String categoria;
+  final String subCategoria;
 
   ProductModel({
     required this.productoID,
@@ -19,6 +21,8 @@ class ProductModel {
     required this.fechaCreacion,
     required this.urlImage,
     required this.sku,
+    required this.categoria,
+    required this.subCategoria,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +40,8 @@ class ProductModel {
       fechaCreacion: json['FechaCreacion'],
       urlImage: json['urlImage'],
       sku: json['sku'],
+      categoria: json['Categoria'],
+      subCategoria: json['SubCategoria'],
     );
   }
 
@@ -50,6 +56,8 @@ class ProductModel {
       'FechaCreacion': fechaCreacion,
       'sku': sku,
       'urlImage': urlImage,
+      'Categoria': categoria,
+      'SubCategoria': subCategoria,
     };
   }
 }
