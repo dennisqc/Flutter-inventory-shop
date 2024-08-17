@@ -12,6 +12,7 @@ class ProductModel {
   final int categoriaId;
   final String subCategoria;
   final int subCategoriaId;
+  
 
   ProductModel({
     required this.productoID,

@@ -13,8 +13,8 @@ class ListProductItem extends StatefulWidget {
 
 class _ListProductItemState extends State<ListProductItem> {
   List<ProductModel> products = [];
-  bool isLoading = true; // Añadido para controlar el estado de carga
-  bool hasError = false; // Añadido para manejar errores de carga
+  bool isLoading = true;
+  bool hasError = false;
   final ProductSelect productService =
       ProductSelect(baseUrl: 'http://10.0.2.2:5000');
 
@@ -44,32 +44,32 @@ class _ListProductItemState extends State<ListProductItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Inventory Page"),
-        backgroundColor: Colors.blueGrey,
+        title: Text("Inventory"),
+        backgroundColor: Color(0xFF586FA9), // Azul oscuro
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : hasError
-              ? Center(child: Text('Error cargando productos'))
+              ? Center(child: Text('Error loading products'))
               : products.isEmpty
-                  ? Center(child: Text('No hay productos disponibles'))
+                  ? Center(child: Text('No products available'))
                   : GridView.builder(
                       padding: EdgeInsets.all(8),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            2, // Número de columnas en la cuadrícula
-                        childAspectRatio:
-                            0.7, // Relación de aspecto de cada elemento
-                        crossAxisSpacing:
-                            8, // Espacio horizontal entre los elementos
-                        mainAxisSpacing:
-                            8, // Espacio vertical entre los elementos
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.65,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
                       ),
                       itemCount: products.length,
                       itemBuilder: (context, index) {
                         final product = products[index];
                         return Card(
-                          elevation: 3,
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          color: Color(0xFFE6F0FF), // Azul claro
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -96,16 +96,16 @@ class _ListProductItemState extends State<ListProductItem> {
                                           errorBuilder:
                                               (context, error, stackTrace) {
                                             return Icon(
-                                              Icons.shopping_bag,
+                                              Icons.error,
                                               size: 80,
-                                              color: Colors.grey[300],
+                                              color: Colors.grey[400],
                                             );
                                           },
                                         )
                                       : Icon(
-                                          Icons.shopping_bag,
+                                          Icons.error,
                                           size: 80,
-                                          color: Colors.grey[300],
+                                          color: Colors.grey[400],
                                         ),
                                 ),
                                 SizedBox(height: 8),
@@ -114,23 +114,35 @@ class _ListProductItemState extends State<ListProductItem> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
+                                    color: Color(0xFF003366), // Azul oscuro
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
                                   product.descripcion,
+                                  style: TextStyle(
+                                    color: Color(0xFF0066CC), // Azul medio
+                                  ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  'Price: \$${product.precioVenta.toStringAsFixed(2)}',
+                                  'Precio: S/.${product.precioVenta.toStringAsFixed(2)}',
+                                  style: TextStyle(
+                                    color: Colors.greenAccent,
+                                  ),
+                                ),
+                                Text(
+                                  'Precio: S/.${product.precioVenta.toStringAsFixed(2)}',
+                                  style: TextStyle(
+                                    color: Colors.greenAccent,
+                                  ),
                                 ),
                                 SizedBox(height: 8),
                                 ElevatedButton(
                                   onPressed: () {
-                                    // Navega a la nueva pantalla mostrando los detalles del producto
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -139,9 +151,13 @@ class _ListProductItemState extends State<ListProductItem> {
                                       ),
                                     );
                                   },
-                                  child: Text('Ver Producto'),
+                                  child: Text('View Product'),
                                   style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color(0xFF586FA9), // Azul oscuro
+                                    //  onPrimary: Colors.white, // Color del texto
                                     minimumSize: Size(double.infinity, 36),
+                                    elevation: 4,
                                   ),
                                 ),
                               ],
