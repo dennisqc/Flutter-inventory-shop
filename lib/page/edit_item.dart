@@ -186,23 +186,23 @@ class _EditProductState extends State<EditItem> {
             children: [
               _buildTextField(
                 controller: _nameController,
-                labelText: 'Name',
+                labelText: 'Nombre',
                 validator: (value) => value == null || value.isEmpty
                     ? 'Please enter a name'
                     : null,
               ),
-              SizedBox(height: 12),
-              _buildTextField(
-                controller: _descriptionController,
-                labelText: 'Description',
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Please enter a description'
-                    : null,
-              ),
+              // SizedBox(height: 12),
+              // _buildTextField(
+              //   controller: _descriptionController,
+              //   labelText: 'Description',
+              //   validator: (value) => value == null || value.isEmpty
+              //       ? 'Please enter a description'
+              //       : null,
+              // ),
               SizedBox(height: 12),
               _buildTextField(
                 controller: _pricePurchaseController,
-                labelText: 'Purchase Price',
+                labelText: 'Precio de Compra',
                 keyboardType: TextInputType.number,
                 validator: (value) => value == null || value.isEmpty
                     ? 'Please enter a purchase price'
@@ -211,7 +211,7 @@ class _EditProductState extends State<EditItem> {
               SizedBox(height: 12),
               _buildTextField(
                 controller: _priceSaleController,
-                labelText: 'Sale Price',
+                labelText: 'Precio de Venta',
                 keyboardType: TextInputType.number,
                 validator: (value) => value == null || value.isEmpty
                     ? 'Please enter a sale price'
@@ -245,7 +245,7 @@ class _EditProductState extends State<EditItem> {
               SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 value: selectedSubCategory,
-                decoration: InputDecoration(labelText: 'Sub-Category'),
+                decoration: InputDecoration(labelText: 'Tipo'),
                 items: subCategories.map((subCategory) {
                   return DropdownMenuItem<String>(
                     value: subCategory['SubCategoriaID'],
@@ -267,7 +267,7 @@ class _EditProductState extends State<EditItem> {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _updateProduct,
-                child: Text('Save Changes'),
+                child: Text('Guardar Cambios'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _customBlue,
                   minimumSize: Size(double.infinity, 36),

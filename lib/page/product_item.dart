@@ -106,7 +106,7 @@ class _ProductItemState extends State<ProductItem> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Compra Price: S/.${_product.precioCompra.toStringAsFixed(2)}',
+                        'Precio de Compra: S/.${_product.precioCompra.toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
@@ -114,7 +114,7 @@ class _ProductItemState extends State<ProductItem> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Sale Price: S/.${_product.precioVenta.toStringAsFixed(2)}',
+                        'Precio de Venta: S/.${_product.precioVenta.toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.greenAccent,
@@ -130,7 +130,7 @@ class _ProductItemState extends State<ProductItem> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Category: ${_product.categoria}',
+                        'Categoria: ${_product.categoria}',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
@@ -138,7 +138,7 @@ class _ProductItemState extends State<ProductItem> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Sub-Category: ${_product.subCategoria}',
+                        'Tipo: ${_product.subCategoria}',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
