@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopflutter/page/list_product_item.dart';
 import 'package:shopflutter/widgets/side_menu.dart';
 import 'dart:convert';
 import '../models/product_model.dart';
@@ -31,12 +32,16 @@ class _EditProductState extends State<EditItem> {
     super.initState();
     _nameController = _createController(widget.product.nombre);
     _descriptionController = _createController(widget.product.descripcion);
-    _pricePurchaseController = _createController(widget.product.precioCompra.toString());
-    _priceSaleController = _createController(widget.product.precioVenta.toString());
-    _stockController = _createController(widget.product.cantidadEnStock.toString());
+    _pricePurchaseController =
+        _createController(widget.product.precioCompra.toString());
+    _priceSaleController =
+        _createController(widget.product.precioVenta.toString());
+    _stockController =
+        _createController(widget.product.cantidadEnStock.toString());
     _imageUrlController = _createController(widget.product.urlImage);
     _skuController = _createController(widget.product.sku);
-    _subCategoryController = _createController(widget.product.subCategoriaId.toString());
+    _subCategoryController =
+        _createController(widget.product.subCategoriaId.toString());
   }
 
   @override
@@ -71,7 +76,9 @@ class _EditProductState extends State<EditItem> {
         categoria: widget.product.categoria,
         subCategoria: widget.product.subCategoria,
         categoriaId: widget.product.categoriaId,
-        subCategoriaId: int.tryParse(_subCategoryController.text) ?? widget.product.subCategoriaId,
+        subCategoriaId: int.tryParse(_subCategoryController.text) ??
+            widget.product.subCategoriaId,
+        stock: widget.product.stock,
       );
 
       final jsonBody = jsonEncode(updatedProduct.toJson());
@@ -79,7 +86,8 @@ class _EditProductState extends State<EditItem> {
 
       try {
         final response = await http.put(
-          Uri.parse('http://10.0.2.2:5000/productos/${widget.product.productoID}'),
+          Uri.parse(
+              'http://10.0.2.2:5000/productos/${widget.product.productoID}'),
           headers: {'Content-Type': 'application/json'},
           body: jsonBody,
         );
@@ -87,7 +95,13 @@ class _EditProductState extends State<EditItem> {
         print('Response body: ${response.body}');
         if (response.statusCode == 200) {
           print('Product updated successfully');
-          Navigator.pop(context);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ListProductItem(),
+            ),
+          ); // Pasar true para indicar que se actualizó
         } else {
           print('Failed to update product');
         }
@@ -134,53 +148,69 @@ class _EditProductState extends State<EditItem> {
               _buildTextField(
                 controller: _nameController,
                 labelText: 'Name',
-                validator: (value) => value == null || value.isEmpty ? 'Please enter a name' : null,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter a name'
+                    : null,
               ),
               SizedBox(height: 12),
               _buildTextField(
                 controller: _descriptionController,
                 labelText: 'Description',
-                validator: (value) => value == null || value.isEmpty ? 'Please enter a description' : null,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter a description'
+                    : null,
               ),
               SizedBox(height: 12),
               _buildTextField(
                 controller: _pricePurchaseController,
                 labelText: 'Purchase Price',
                 keyboardType: TextInputType.number,
-                validator: (value) => value == null || value.isEmpty ? 'Please enter a purchase price' : null,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter a purchase price'
+                    : null,
               ),
               SizedBox(height: 12),
               _buildTextField(
                 controller: _priceSaleController,
                 labelText: 'Sale Price',
                 keyboardType: TextInputType.number,
-                validator: (value) => value == null || value.isEmpty ? 'Please enter a sale price' : null,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter a sale price'
+                    : null,
               ),
               SizedBox(height: 12),
               _buildTextField(
                 controller: _stockController,
                 labelText: 'Stock',
                 keyboardType: TextInputType.number,
-                validator: (value) => value == null || value.isEmpty ? 'Please enter stock quantity' : null,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter stock quantity'
+                    : null,
               ),
               SizedBox(height: 12),
               _buildTextField(
                 controller: _imageUrlController,
                 labelText: 'Image URL',
-                validator: (value) => value == null || value.isEmpty ? 'Please enter the image URL' : null,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter the image URL'
+                    : null,
               ),
               SizedBox(height: 12),
               _buildTextField(
                 controller: _skuController,
                 labelText: 'SKU',
-                validator: (value) => value == null || value.isEmpty ? 'Please enter the SKU' : null,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter the SKU'
+                    : null,
               ),
               SizedBox(height: 12),
               _buildTextField(
                 controller: _subCategoryController,
                 labelText: 'Sub-Category ID',
                 keyboardType: TextInputType.number,
-                validator: (value) => value == null || value.isEmpty ? 'Please enter the sub-category ID' : null,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter the sub-category ID'
+                    : null,
               ),
               SizedBox(height: 16),
               ElevatedButton(

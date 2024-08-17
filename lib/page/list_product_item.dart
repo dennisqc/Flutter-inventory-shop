@@ -135,7 +135,7 @@ class _ListProductItemState extends State<ListProductItem> {
                                   ),
                                 ),
                                 Text(
-                                  'Precio: S/.${product.precioVenta.toStringAsFixed(2)}',
+                                  'Stock: ${product.stock}',
                                   style: TextStyle(
                                     color: Colors.greenAccent,
                                   ),
@@ -151,7 +151,7 @@ class _ListProductItemState extends State<ListProductItem> {
                                       ),
                                     );
                                   },
-                                  child: Text('View Product'),
+                                  child: Text('Ver Producto'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         Color(0xFF586FA9), // Azul oscuro

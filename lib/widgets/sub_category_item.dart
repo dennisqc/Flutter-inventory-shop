@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:shopflutter/models/product_model.dart';
 import 'package:shopflutter/page/product_item.dart';
-import 'package:shopflutter/widgets/side_menu.dart'; // Asegúrate de tener la ruta correcta
+import 'package:shopflutter/widgets/side_menu.dart';
 
 class SubCategoryItem extends StatelessWidget {
   final List<ProductModel> products;
 
-  SubCategoryItem({super.key, required this.products});
+  const SubCategoryItem({super.key, required this.products});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Products'),
+        backgroundColor: Color(0xFF586FA9), // Azul marino
       ),
       body: products.isEmpty
           ? Center(child: CircularProgressIndicator())
@@ -28,25 +29,36 @@ class SubCategoryItem extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = products[index];
                 return Card(
-                  elevation: 3,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: product.urlImage.isNotEmpty
-                              ? Image.network(
-                                  product.urlImage,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: 150,
-                                )
-                              : Icon(
-                                  Icons.shopping_bag,
-                                  size: 80,
-                                  color: Colors.grey[300],
-                                ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                            child: product.urlImage.isNotEmpty
+                                ? Image.network(
+                                    product.urlImage,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: 150,
+                                  )
+                                : Container(
+                                    color: Colors.grey[300],
+                                    width: double.infinity,
+                                    height: 150,
+                                    child: Icon(
+                                      Icons.shopping_bag,
+                                      size: 80,
+                                      color: Colors.grey[500],
+                                    ),
+                                  ),
+                          ),
                         ),
                         SizedBox(height: 8),
                         Text(
@@ -54,34 +66,45 @@ class SubCategoryItem extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
+                            color: Color(0xFF586FA9), // Azul marino
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
+                        SizedBox(height: 4),
                         Text(
                           product.descripcion,
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                          ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: 4),
                         Text(
                           'Price: \$${product.precioVenta.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            color: Colors.greenAccent,
+                          ),
                         ),
                         SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
-                            // Navega a la nueva pantalla mostrando los detalles del producto
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    ProductItem(product: product),
+                                builder: (context) => ProductItem(product: product),
                               ),
                             );
                           },
                           child: Text('Ver Producto'),
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF586FA9), // Azul marino
+                           // onPrimary: Colors.white,
                             minimumSize: Size(double.infinity, 36),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                         ),
                       ],

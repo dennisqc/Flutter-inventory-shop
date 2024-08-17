@@ -79,64 +79,85 @@ class _SideMenuState extends State<SideMenu> {
       children: [
         UserAccountsDrawerHeader(
           currentAccountPictureSize: const Size.square(80.0),
-          accountName: Text("Nombre de Usuario"),
-          accountEmail: Text("usuario@correo.com"),
+          accountName: Text(
+            "Nombre de Usuario",
+            style: TextStyle(color: Colors.white),
+          ),
+          accountEmail: Text(
+            "usuario@correo.com",
+            style: TextStyle(color: Colors.white70),
+          ),
           currentAccountPicture: CircleAvatar(
             backgroundImage: NetworkImage(
                 "https://dthezntil550i.cloudfront.net/f4/latest/f41908291942413280009640715/1280_960/1b2d9510-d66d-43a2-971a-cfcbb600e7fe.png"),
           ),
           decoration: BoxDecoration(
-            color: Colors.blueGrey[800],
+            color: Color(0xFF586FA9), // Azul marino
           ),
         ),
         ListTile(
-          title: Text("Productos"),
+          title: Text(
+            "Productos",
+            style: TextStyle(color: Color(0xFF586FA9)),
+          ),
+          leading: Icon(Icons.inventory, color: Color(0xFF586FA9)),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    ListProductItem(), // Pasar una lista vacía inicialmente
+                builder: (context) => ListProductItem(),
               ),
             );
           },
         ),
         ...categories.map<Widget>((category) {
           return ExpansionTile(
-            title: Text(category['Nombre']),
+            title: Text(
+              category['Nombre'],
+              style: TextStyle(color: Color(0xFF586FA9)),
+            ),
+            leading: Icon(Icons.category, color: Color(0xFF586FA9)),
             children: (category['Subcategorias'] as List<dynamic>)
                 .map<Widget>((subcat) {
               return ListTile(
-                title: Text(subcat['Nombre']),
+                title: Text(
+                  subcat['Nombre'],
+                  style: TextStyle(color: Colors.grey[800]),
+                ),
                 onTap: () {
                   fetchProductsBySubcategory(subcat['SubCategoriaID']);
-                  print(category);
                 },
               );
             }).toList(),
           );
-        }).toList(),   Divider(),
+        }).toList(),
+        Divider(),
         ListTile(
-          title: Text("Nuevo Producto"),
-          leading: Icon(Icons.settings),
+          title: Text(
+            "Nuevo Producto",
+            style: TextStyle(color: Color(0xFF586FA9)),
+          ),
+          leading: Icon(Icons.add_box, color: Color(0xFF586FA9)),
           onTap: () {
-            // Navegar a la pantalla de configuración
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => NewItem(), // Definir esta página
+                builder: (context) => NewItem(),
               ),
             );
           },
-        ),ListTile(
-          title: Text("Nueva Categoria"),
-          leading: Icon(Icons.settings),
+        ),
+        ListTile(
+          title: Text(
+            "Nueva Categoria",
+            style: TextStyle(color: Color(0xFF586FA9)),
+          ),
+          leading: Icon(Icons.category, color: Color(0xFF586FA9)),
           onTap: () {
-            // Navegar a la pantalla de configuración
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => NewItem(), // Definir esta página
+                builder: (context) => NewItem(),
               ),
             );
           },
@@ -151,7 +172,12 @@ class _SideMenuState extends State<SideMenu> {
             },
             child: Text("Cerrar sesión"),
             style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF586FA9), // Azul marino
+            //  onPrimary: Colors.white,
               minimumSize: Size(double.infinity, 36),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           ),
         ),

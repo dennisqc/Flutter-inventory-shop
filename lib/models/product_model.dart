@@ -12,7 +12,7 @@ class ProductModel {
   final int categoriaId;
   final String subCategoria;
   final int subCategoriaId;
-  
+  final int stock;
 
   ProductModel({
     required this.productoID,
@@ -28,6 +28,7 @@ class ProductModel {
     required this.subCategoria,
     required this.categoriaId,
     required this.subCategoriaId,
+    required this.stock,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -50,6 +51,7 @@ class ProductModel {
       subCategoria: json['SubCategoria'] ?? '',
       categoriaId: json['CategoriaID'] ?? 0,
       subCategoriaId: json['SubCategoriaID'] ?? 0,
+      stock:  json['stock'] ?? 0,
     );
   }
 
@@ -67,7 +69,8 @@ class ProductModel {
       'Categoria': categoria,
       'SubCategoria': subCategoria,
       'SubCategoriaID': subCategoriaId,
-      'CategoriaID': categoriaId
+      'CategoriaID': categoriaId,
+      'stock':stock,
     };
   }
 }
