@@ -9,7 +9,9 @@ class ProductModel {
   final String urlImage;
   final String sku;
   final String categoria;
+  final int categoriaId;
   final String subCategoria;
+  final int subCategoriaId;
 
   ProductModel({
     required this.productoID,
@@ -23,25 +25,30 @@ class ProductModel {
     required this.sku,
     required this.categoria,
     required this.subCategoria,
+    required this.categoriaId,
+    required this.subCategoriaId,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      productoID: json['ProductoID'],
-      nombre: json['Nombre'],
-      descripcion: json['Descripcion'],
+      productoID: json['ProductoID'] ??
+          0, // Proporciona un valor predeterminado si es null
+      nombre: json['Nombre'] ?? '',
+      descripcion: json['Descripcion'] ?? '',
       precioCompra: (json['PrecioCompra'] is String
-          ? double.parse(json['PrecioCompra'])
-          : json['PrecioCompra'].toDouble()),
+          ? double.tryParse(json['PrecioCompra']) ?? 0.0
+          : (json['PrecioCompra'] as num).toDouble()),
       precioVenta: (json['PrecioVenta'] is String
-          ? double.parse(json['PrecioVenta'])
-          : json['PrecioVenta'].toDouble()),
-      cantidadEnStock: json['CantidadEnStock'],
-      fechaCreacion: json['FechaCreacion'],
-      urlImage: json['urlImage'],
-      sku: json['sku'],
-      categoria: json['Categoria'],
-      subCategoria: json['SubCategoria'],
+          ? double.tryParse(json['PrecioVenta']) ?? 0.0
+          : (json['PrecioVenta'] as num).toDouble()),
+      cantidadEnStock: json['CantidadEnStock'] ?? 0,
+      fechaCreacion: json['FechaCreacion'] ?? '',
+      urlImage: json['urlImage'] ?? '',
+      sku: json['sku'] ?? '',
+      categoria: json['Categoria'] ?? '',
+      subCategoria: json['SubCategoria'] ?? '',
+      categoriaId: json['CategoriaID'] ?? 0,
+      subCategoriaId: json['SubCategoriaID'] ?? 0,
     );
   }
 
@@ -57,7 +64,9 @@ class ProductModel {
       'sku': sku,
       'urlImage': urlImage,
       'Categoria': categoria,
-      // 'SubCategoria': subCategoria,
+      'SubCategoria': subCategoria,
+      'SubCategoriaID': subCategoriaId,
+      'CategoriaID': categoriaId
     };
   }
 }

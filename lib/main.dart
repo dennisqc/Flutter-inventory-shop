@@ -14,7 +14,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MaterialApp(
-    home: NewItem(),
+    home: ListProductItem(),
     theme: lightMode,
     debugShowCheckedModeBanner: false,
   ));

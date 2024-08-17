@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:shopflutter/page/list_product_item.dart';
+import 'package:shopflutter/widgets/side_menu.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -248,6 +249,7 @@ class _NewItemState extends State<NewItem> {
           ),
         ),
       ),
+      drawer: SideMenu(),
     );
   }
 }

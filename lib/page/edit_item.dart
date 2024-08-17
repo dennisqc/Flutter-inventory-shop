@@ -23,25 +23,26 @@ class _EditProductState extends State<EditItem> {
   late TextEditingController _pricePurchaseController;
   late TextEditingController _priceSaleController;
   late TextEditingController _stockController;
-  late TextEditingController _creationDateController;
   late TextEditingController _imageUrlController;
   late TextEditingController _skuController;
-  late TextEditingController _categoryController;
   late TextEditingController _subCategoryController;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.product.nombre);
-    _descriptionController = TextEditingController(text: widget.product.descripcion);
-    _pricePurchaseController = TextEditingController(text: widget.product.precioCompra.toString());
-    _priceSaleController = TextEditingController(text: widget.product.precioVenta.toString());
-    _stockController = TextEditingController(text: widget.product.cantidadEnStock.toString());
-    _creationDateController = TextEditingController(text: widget.product.fechaCreacion);
+    _descriptionController =
+        TextEditingController(text: widget.product.descripcion);
+    _pricePurchaseController =
+        TextEditingController(text: widget.product.precioCompra.toString());
+    _priceSaleController =
+        TextEditingController(text: widget.product.precioVenta.toString());
+    _stockController =
+        TextEditingController(text: widget.product.cantidadEnStock.toString());
     _imageUrlController = TextEditingController(text: widget.product.urlImage);
     _skuController = TextEditingController(text: widget.product.sku);
-    _categoryController = TextEditingController(text: widget.product.categoria);
-    _subCategoryController = TextEditingController(text: widget.product.subCategoria);
+    _subCategoryController =
+        TextEditingController(text: widget.product.subCategoriaId.toString());
   }
 
   @override
@@ -51,16 +52,16 @@ class _EditProductState extends State<EditItem> {
     _pricePurchaseController.dispose();
     _priceSaleController.dispose();
     _stockController.dispose();
-    _creationDateController.dispose();
     _imageUrlController.dispose();
     _skuController.dispose();
-    _categoryController.dispose();
     _subCategoryController.dispose();
     super.dispose();
   }
 
   Future<void> updateProduct() async {
     if (_formKey.currentState?.validate() ?? false) {
+      print('Image URL: ${_imageUrlController.text}'); // Verifica el valor aquí
+
       final updatedProduct = ProductModel(
         productoID: widget.product.productoID,
         nombre: _nameController.text.trim(),
@@ -68,30 +69,27 @@ class _EditProductState extends State<EditItem> {
         precioCompra: double.tryParse(_pricePurchaseController.text) ?? 0.0,
         precioVenta: double.tryParse(_priceSaleController.text) ?? 0.0,
         cantidadEnStock: int.tryParse(_stockController.text) ?? 0,
-        fechaCreacion: _creationDateController.text.trim(),
+        fechaCreacion: widget
+            .product.fechaCreacion, // Mantener la fecha de creación original
         urlImage: _imageUrlController.text.trim(),
         sku: _skuController.text.trim(),
-        categoria: _categoryController.text.trim(),
-        subCategoria: _subCategoryController.text.trim(),
+        categoria: widget.product.categoria, // Mantener la categoría original
+        subCategoria:
+            widget.product.subCategoria, // Mantener la subcategoría original
+        categoriaId: widget
+            .product.categoriaId, // Mantener el ID de la categoría original
+        subCategoriaId: int.tryParse(_subCategoryController.text) ??
+            widget.product.subCategoriaId, // Modificar el ID de la subcategoría
       );
-
-      // Verifica que todos los campos necesarios tengan valores
-      if (updatedProduct.nombre.isEmpty) {
-        print('Error: Name cannot be empty');
-        return;
-      }
-      if (updatedProduct.urlImage.isEmpty) {
-        print('Error: URLImage cannot be empty');
-        return;
-      }
-      if (updatedProduct.sku.isEmpty) {
-        print('Error: SKU cannot be empty');
-        return;
-      }
+      // Convertir el modelo a JSON y verificar el cuerpo de la solicitud
+      final jsonBody = jsonEncode(updatedProduct.toJson());
+      print(
+          'Request body: $jsonBody'); // Imprimir el cuerpo de la solicitud para depuración
 
       try {
         final response = await http.put(
-          Uri.parse('http://10.0.2.2:5000/productos/${widget.product.productoID}'),
+          Uri.parse(
+              'http://10.0.2.2:5000/productos/${widget.product.productoID}'),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(updatedProduct.toJson()),
         );
@@ -177,17 +175,6 @@ class _EditProductState extends State<EditItem> {
                 },
               ),
               TextFormField(
-                controller: _creationDateController,
-                decoration: InputDecoration(labelText: 'Creation Date'),
-                keyboardType: TextInputType.datetime,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter creation date';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
                 controller: _imageUrlController,
                 decoration: InputDecoration(labelText: 'Image URL'),
                 validator: (value) {
@@ -208,21 +195,12 @@ class _EditProductState extends State<EditItem> {
                 },
               ),
               TextFormField(
-                controller: _categoryController,
-                decoration: InputDecoration(labelText: 'Category'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the category';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
                 controller: _subCategoryController,
-                decoration: InputDecoration(labelText: 'Sub-Category'),
+                decoration: InputDecoration(labelText: 'Sub-Category ID'),
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the sub-category';
+                    return 'Please enter the sub-category ID';
                   }
                   return null;
                 },

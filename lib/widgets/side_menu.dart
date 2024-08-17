@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopflutter/models/product_model.dart';
 import 'package:shopflutter/page/list_product_item.dart';
+import 'package:shopflutter/page/new_item.dart';
 import 'package:shopflutter/widgets/sub_category_item.dart';
 import 'dart:convert';
 
@@ -46,7 +47,7 @@ class _SideMenuState extends State<SideMenu> {
       );
       if (response.statusCode == 200) {
         List<dynamic> productsJson = json.decode(response.body);
-        
+
         // Convertir cada producto JSON a ProductModel
         List<ProductModel> products = productsJson
             .map((productJson) => ProductModel.fromJson(productJson))
@@ -62,7 +63,7 @@ class _SideMenuState extends State<SideMenu> {
         print('Failed to load products');
       }
     } catch (e) {
-      print('Error: $e');
+      print('Error2: $e');
     }
   }
 
@@ -94,7 +95,8 @@ class _SideMenuState extends State<SideMenu> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ListProductItem(), // Pasar una lista vacía inicialmente
+                builder: (context) =>
+                    ListProductItem(), // Pasar una lista vacía inicialmente
               ),
             );
           },
@@ -108,11 +110,37 @@ class _SideMenuState extends State<SideMenu> {
                 title: Text(subcat['Nombre']),
                 onTap: () {
                   fetchProductsBySubcategory(subcat['SubCategoriaID']);
+                  print(category);
                 },
               );
             }).toList(),
           );
-        }).toList(),
+        }).toList(),   Divider(),
+        ListTile(
+          title: Text("Nuevo Producto"),
+          leading: Icon(Icons.settings),
+          onTap: () {
+            // Navegar a la pantalla de configuración
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewItem(), // Definir esta página
+              ),
+            );
+          },
+        ),ListTile(
+          title: Text("Nueva Categoria"),
+          leading: Icon(Icons.settings),
+          onTap: () {
+            // Navegar a la pantalla de configuración
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewItem(), // Definir esta página
+              ),
+            );
+          },
+        ),
         Divider(),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
