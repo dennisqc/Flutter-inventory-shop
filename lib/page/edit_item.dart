@@ -7,10 +7,7 @@ import '../models/product_model.dart';
 class EditItem extends StatefulWidget {
   final ProductModel product;
 
-  const EditItem({
-    required this.product,
-    super.key,
-  });
+  const EditItem({required this.product, super.key});
 
   @override
   _EditProductState createState() => _EditProductState();
@@ -18,31 +15,28 @@ class EditItem extends StatefulWidget {
 
 class _EditProductState extends State<EditItem> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _descriptionController;
-  late TextEditingController _pricePurchaseController;
-  late TextEditingController _priceSaleController;
-  late TextEditingController _stockController;
-  late TextEditingController _imageUrlController;
-  late TextEditingController _skuController;
-  late TextEditingController _subCategoryController;
+  late final TextEditingController _nameController;
+  late final TextEditingController _descriptionController;
+  late final TextEditingController _pricePurchaseController;
+  late final TextEditingController _priceSaleController;
+  late final TextEditingController _stockController;
+  late final TextEditingController _imageUrlController;
+  late final TextEditingController _skuController;
+  late final TextEditingController _subCategoryController;
+
+  final Color _customBlue = Color(0xFF586FA9); // Azul personalizado
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.product.nombre);
-    _descriptionController =
-        TextEditingController(text: widget.product.descripcion);
-    _pricePurchaseController =
-        TextEditingController(text: widget.product.precioCompra.toString());
-    _priceSaleController =
-        TextEditingController(text: widget.product.precioVenta.toString());
-    _stockController =
-        TextEditingController(text: widget.product.cantidadEnStock.toString());
-    _imageUrlController = TextEditingController(text: widget.product.urlImage);
-    _skuController = TextEditingController(text: widget.product.sku);
-    _subCategoryController =
-        TextEditingController(text: widget.product.subCategoriaId.toString());
+    _nameController = _createController(widget.product.nombre);
+    _descriptionController = _createController(widget.product.descripcion);
+    _pricePurchaseController = _createController(widget.product.precioCompra.toString());
+    _priceSaleController = _createController(widget.product.precioVenta.toString());
+    _stockController = _createController(widget.product.cantidadEnStock.toString());
+    _imageUrlController = _createController(widget.product.urlImage);
+    _skuController = _createController(widget.product.sku);
+    _subCategoryController = _createController(widget.product.subCategoriaId.toString());
   }
 
   @override
@@ -58,10 +52,12 @@ class _EditProductState extends State<EditItem> {
     super.dispose();
   }
 
-  Future<void> updateProduct() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      print('Image URL: ${_imageUrlController.text}'); // Verifica el valor aquí
+  TextEditingController _createController(String text) {
+    return TextEditingController(text: text);
+  }
 
+  Future<void> _updateProduct() async {
+    if (_formKey.currentState?.validate() ?? false) {
       final updatedProduct = ProductModel(
         productoID: widget.product.productoID,
         nombre: _nameController.text.trim(),
@@ -69,29 +65,23 @@ class _EditProductState extends State<EditItem> {
         precioCompra: double.tryParse(_pricePurchaseController.text) ?? 0.0,
         precioVenta: double.tryParse(_priceSaleController.text) ?? 0.0,
         cantidadEnStock: int.tryParse(_stockController.text) ?? 0,
-        fechaCreacion: widget
-            .product.fechaCreacion, // Mantener la fecha de creación original
+        fechaCreacion: widget.product.fechaCreacion,
         urlImage: _imageUrlController.text.trim(),
         sku: _skuController.text.trim(),
-        categoria: widget.product.categoria, // Mantener la categoría original
-        subCategoria:
-            widget.product.subCategoria, // Mantener la subcategoría original
-        categoriaId: widget
-            .product.categoriaId, // Mantener el ID de la categoría original
-        subCategoriaId: int.tryParse(_subCategoryController.text) ??
-            widget.product.subCategoriaId, // Modificar el ID de la subcategoría
+        categoria: widget.product.categoria,
+        subCategoria: widget.product.subCategoria,
+        categoriaId: widget.product.categoriaId,
+        subCategoriaId: int.tryParse(_subCategoryController.text) ?? widget.product.subCategoriaId,
       );
-      // Convertir el modelo a JSON y verificar el cuerpo de la solicitud
+
       final jsonBody = jsonEncode(updatedProduct.toJson());
-      print(
-          'Request body: $jsonBody'); // Imprimir el cuerpo de la solicitud para depuración
+      print('Request body: $jsonBody');
 
       try {
         final response = await http.put(
-          Uri.parse(
-              'http://10.0.2.2:5000/productos/${widget.product.productoID}'),
+          Uri.parse('http://10.0.2.2:5000/productos/${widget.product.productoID}'),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(updatedProduct.toJson()),
+          body: jsonBody,
         );
         print('Response status: ${response.statusCode}');
         print('Response body: ${response.body}');
@@ -107,109 +97,97 @@ class _EditProductState extends State<EditItem> {
     }
   }
 
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    required String? Function(String?) validator,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: TextStyle(color: _customBlue),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: _customBlue),
+        ),
+      ),
+      validator: validator,
+      keyboardType: keyboardType,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Product'),
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: _customBlue,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFormField(
+              _buildTextField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
+                labelText: 'Name',
+                validator: (value) => value == null || value.isEmpty ? 'Please enter a name' : null,
               ),
-              TextFormField(
+              SizedBox(height: 12),
+              _buildTextField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
+                labelText: 'Description',
+                validator: (value) => value == null || value.isEmpty ? 'Please enter a description' : null,
               ),
-              TextFormField(
+              SizedBox(height: 12),
+              _buildTextField(
                 controller: _pricePurchaseController,
-                decoration: InputDecoration(labelText: 'Purchase Price'),
+                labelText: 'Purchase Price',
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a purchase price';
-                  }
-                  return null;
-                },
+                validator: (value) => value == null || value.isEmpty ? 'Please enter a purchase price' : null,
               ),
-              TextFormField(
+              SizedBox(height: 12),
+              _buildTextField(
                 controller: _priceSaleController,
-                decoration: InputDecoration(labelText: 'Sale Price'),
+                labelText: 'Sale Price',
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a sale price';
-                  }
-                  return null;
-                },
+                validator: (value) => value == null || value.isEmpty ? 'Please enter a sale price' : null,
               ),
-              TextFormField(
+              SizedBox(height: 12),
+              _buildTextField(
                 controller: _stockController,
-                decoration: InputDecoration(labelText: 'Stock'),
+                labelText: 'Stock',
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter stock quantity';
-                  }
-                  return null;
-                },
+                validator: (value) => value == null || value.isEmpty ? 'Please enter stock quantity' : null,
               ),
-              TextFormField(
+              SizedBox(height: 12),
+              _buildTextField(
                 controller: _imageUrlController,
-                decoration: InputDecoration(labelText: 'Image URL'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the image URL';
-                  }
-                  return null;
-                },
+                labelText: 'Image URL',
+                validator: (value) => value == null || value.isEmpty ? 'Please enter the image URL' : null,
               ),
-              TextFormField(
+              SizedBox(height: 12),
+              _buildTextField(
                 controller: _skuController,
-                decoration: InputDecoration(labelText: 'SKU'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the SKU';
-                  }
-                  return null;
-                },
+                labelText: 'SKU',
+                validator: (value) => value == null || value.isEmpty ? 'Please enter the SKU' : null,
               ),
-              TextFormField(
+              SizedBox(height: 12),
+              _buildTextField(
                 controller: _subCategoryController,
-                decoration: InputDecoration(labelText: 'Sub-Category ID'),
+                labelText: 'Sub-Category ID',
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the sub-category ID';
-                  }
-                  return null;
-                },
+                validator: (value) => value == null || value.isEmpty ? 'Please enter the sub-category ID' : null,
               ),
               SizedBox(height: 16),
               ElevatedButton(
-                onPressed: updateProduct,
+                onPressed: _updateProduct,
                 child: Text('Save Changes'),
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: _customBlue,
                   minimumSize: Size(double.infinity, 36),
                 ),
               ),
