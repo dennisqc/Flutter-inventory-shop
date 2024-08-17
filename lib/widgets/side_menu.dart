@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shopflutter/models/product_model.dart';
 import 'package:shopflutter/page/list_product_item.dart';
 import 'package:shopflutter/page/new_item.dart';
+import 'package:shopflutter/page/new_subcategory_page.dart';
 import 'package:shopflutter/widgets/sub_category_item.dart';
 import 'dart:convert';
 
@@ -157,7 +158,7 @@ class _SideMenuState extends State<SideMenu> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => NewItem(),
+                builder: (context) => NewSubcategoryPage(),
               ),
             );
           },

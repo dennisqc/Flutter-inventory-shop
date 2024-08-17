@@ -135,7 +135,7 @@ class _ListProductItemState extends State<ListProductItem> {
                                   ),
                                 ),
                                 Text(
-                                  'Stock: ${product.stock}',
+                                  'Stock: ${product.cantidadEnStock}',
                                   style: TextStyle(
                                     color: Colors.greenAccent,
                                   ),

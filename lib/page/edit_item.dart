@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'package:shopflutter/page/list_product_item.dart';
 import 'package:shopflutter/widgets/side_menu.dart';
-import 'dart:convert';
 import '../models/product_model.dart';
 
 class EditItem extends StatefulWidget {
@@ -23,9 +24,12 @@ class _EditProductState extends State<EditItem> {
   late final TextEditingController _stockController;
   late final TextEditingController _imageUrlController;
   late final TextEditingController _skuController;
-  late final TextEditingController _subCategoryController;
 
   final Color _customBlue = Color(0xFF586FA9); // Azul personalizado
+
+  String? selectedSubCategory; // Valor seleccionado para el DropdownButton
+
+  List<Map<String, String>> subCategories = [];
 
   @override
   void initState() {
@@ -40,8 +44,8 @@ class _EditProductState extends State<EditItem> {
         _createController(widget.product.cantidadEnStock.toString());
     _imageUrlController = _createController(widget.product.urlImage);
     _skuController = _createController(widget.product.sku);
-    _subCategoryController =
-        _createController(widget.product.subCategoriaId.toString());
+
+    fetchSubCategories();
   }
 
   @override
@@ -53,12 +57,47 @@ class _EditProductState extends State<EditItem> {
     _stockController.dispose();
     _imageUrlController.dispose();
     _skuController.dispose();
-    _subCategoryController.dispose();
     super.dispose();
   }
 
   TextEditingController _createController(String text) {
     return TextEditingController(text: text);
+  }
+
+  Future<void> fetchSubCategories() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://10.0.2.2:5000/subcategorias'),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final uniqueSubCategories = <Map<String, String>>[];
+        final seenIds = <String>{};
+
+        for (var item in data) {
+          final id = item['SubCategoriaID'].toString();
+          final name = item['Nombre'].toString();
+          if (id.isNotEmpty && !seenIds.contains(id)) {
+            uniqueSubCategories.add({
+              'SubCategoriaID': id,
+              'Nombre': name,
+            });
+            seenIds.add(id);
+          }
+        }
+
+        setState(() {
+          subCategories = uniqueSubCategories;
+          selectedSubCategory =
+              widget.product.subCategoriaId.toString(); // Set initial value
+        });
+      } else {
+        throw Exception('Failed to load subcategories');
+      }
+    } catch (e) {
+      print('Error fetching subcategories: $e');
+    }
   }
 
   Future<void> _updateProduct() async {
@@ -74,11 +113,11 @@ class _EditProductState extends State<EditItem> {
         urlImage: _imageUrlController.text.trim(),
         sku: _skuController.text.trim(),
         categoria: widget.product.categoria,
-        subCategoria: widget.product.subCategoria,
+        subCategoria: selectedSubCategory ?? '', // Usar el valor seleccionado
         categoriaId: widget.product.categoriaId,
-        subCategoriaId: int.tryParse(_subCategoryController.text) ??
-            widget.product.subCategoriaId,
         stock: widget.product.stock,
+        subCategoriaId:
+            int.tryParse(selectedSubCategory!) ?? widget.product.subCategoriaId,
       );
 
       final jsonBody = jsonEncode(updatedProduct.toJson());
@@ -204,13 +243,26 @@ class _EditProductState extends State<EditItem> {
                     : null,
               ),
               SizedBox(height: 12),
-              _buildTextField(
-                controller: _subCategoryController,
-                labelText: 'Sub-Category ID',
-                keyboardType: TextInputType.number,
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Please enter the sub-category ID'
-                    : null,
+              DropdownButtonFormField<String>(
+                value: selectedSubCategory,
+                decoration: InputDecoration(labelText: 'Sub-Category'),
+                items: subCategories.map((subCategory) {
+                  return DropdownMenuItem<String>(
+                    value: subCategory['SubCategoriaID'],
+                    child: Text(subCategory['Nombre'] ?? ''),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedSubCategory = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a sub-category';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 16),
               ElevatedButton(
