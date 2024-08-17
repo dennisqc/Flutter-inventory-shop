@@ -21,14 +21,14 @@ class WelcomePage extends StatelessWidget {
                     textAlign: TextAlign.center,
                     text: TextSpan(children: [
                       TextSpan(
-                          text: "Bienvenido otra vez \n",
+                          text: "Bienvenido \n",
                           style: TextStyle(
                             fontSize: 45,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           )),
                       TextSpan(
-                          text: "perosnal",
+                          text: "PERSONAL OK! COMPU",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w600))
                     ]))),

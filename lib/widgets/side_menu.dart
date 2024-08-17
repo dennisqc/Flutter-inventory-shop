@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopflutter/loggin/signin_page.dart';
 import 'package:shopflutter/models/product_model.dart';
 import 'package:shopflutter/page/list_product_item.dart';
 import 'package:shopflutter/page/new_item.dart';
 import 'package:shopflutter/page/new_subcategory_page.dart';
+import 'package:shopflutter/page/welcome_page.dart';
 import 'package:shopflutter/widgets/sub_category_item.dart';
 import 'dart:convert';
 
@@ -67,6 +70,23 @@ class _SideMenuState extends State<SideMenu> {
       print('Error2: $e');
     }
   }
+
+Future<void> _signOut() async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    // Limpia la pila de navegación y navega a la pantalla de bienvenida
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const WelcomePage(),
+      ),
+      (route) => false, // Elimina todas las rutas
+    );
+  } catch (e) {
+    print('Error al cerrar sesión: $e');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -167,14 +187,10 @@ class _SideMenuState extends State<SideMenu> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: ElevatedButton(
-            onPressed: () {
-              // Acción para cerrar sesión
-              print("Cerrar sesión");
-            },
+            onPressed: _signOut,
             child: Text("Cerrar sesión"),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF586FA9), // Azul marino
-            //  onPrimary: Colors.white,
               minimumSize: Size(double.infinity, 36),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

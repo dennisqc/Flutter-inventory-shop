@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:shopflutter/loggin/signin_page.dart';
+import 'package:shopflutter/page/list_product_item.dart';
 import 'package:shopflutter/styles/styles.dart';
 import 'package:shopflutter/widgets/custom_scaffold.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shopflutter/widgets/google_sign.dart';
+import 'package:shopflutter/page/welcome_page.dart'; // Asegúrate de importar WelcomePage
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -65,6 +65,14 @@ class _SignupPageState extends State<SignupPage> {
       setState(() {
         _errorMessage = "Cuenta creada con éxito.";
       });
+
+      // Redirige a la pantalla de bienvenida
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ListProductItem(),
+        ),
+      );
     } catch (e) {
       print("Error al crear la cuenta: ${e.toString()}");
       setState(() {

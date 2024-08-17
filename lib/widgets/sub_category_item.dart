@@ -12,7 +12,7 @@ class SubCategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Products'),
+        title: Text('Productos'),
         backgroundColor: Color(0xFF586FA9), // Azul marino
       ),
       body: products.isEmpty
@@ -40,7 +40,8 @@ class SubCategoryItem extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ClipRRect(
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(12)),
                             child: product.urlImage.isNotEmpty
                                 ? Image.network(
                                     product.urlImage,
@@ -73,7 +74,7 @@ class SubCategoryItem extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          product.descripcion,
+                          product.sku,
                           style: TextStyle(
                             color: Colors.grey[800],
                           ),
@@ -82,9 +83,9 @@ class SubCategoryItem extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'Price: \$${product.precioVenta.toStringAsFixed(2)}',
+                          'Precio: S/.${product.precioVenta.toStringAsFixed(2)}',
                           style: TextStyle(
-                            color: Colors.greenAccent,
+                            // color: Colors.greenAccent,
                           ),
                         ),
                         SizedBox(height: 8),
@@ -93,14 +94,15 @@ class SubCategoryItem extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProductItem(product: product),
+                                builder: (context) =>
+                                    ProductItem(product: product),
                               ),
                             );
                           },
                           child: Text('Ver Producto'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF586FA9), // Azul marino
-                           // onPrimary: Colors.white,
+                            // onPrimary: Colors.white,
                             minimumSize: Size(double.infinity, 36),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),

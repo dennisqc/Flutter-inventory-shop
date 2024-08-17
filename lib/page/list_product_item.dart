@@ -44,7 +44,7 @@ class _ListProductItemState extends State<ListProductItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Inventory"),
+        title: Text("Inventario"),
         backgroundColor: Color(0xFF586FA9), // Azul oscuro
       ),
       body: isLoading

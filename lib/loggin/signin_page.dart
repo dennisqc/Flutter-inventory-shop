@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:shopflutter/styles/styles.dart';
 import 'package:shopflutter/widgets/custom_scaffold.dart';
+import 'package:shopflutter/widgets/google_sign.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -204,15 +205,13 @@ class _SigninPageState extends State<SigninPage> {
                           const SizedBox(
                             height: 25.0,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Brand(Brands.facebook),
-                              Brand(Brands.twitterx),
-                              Brand(Brands.google),
-                              Brand(Brands.apple_logo),
-                            ],
-                          ),
+                            Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(child: Brand(Brands.facebook)),
+                          GoogleSign(),
+                        ],
+                      ),
                           const SizedBox(
                             height: 25.0,
                           ),
