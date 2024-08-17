@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shopflutter/models/product_model.dart'; // Asegúrate de tener la ruta correcta
+import 'package:shopflutter/models/product_model.dart';
+import 'package:shopflutter/page/product_item.dart';
+import 'package:shopflutter/widgets/side_menu.dart'; // Asegúrate de tener la ruta correcta
 
 class SubCategoryItem extends StatelessWidget {
   final List<ProductModel> products;
@@ -68,7 +70,14 @@ class SubCategoryItem extends StatelessWidget {
                         SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
-                            print('Clicked on ${product.nombre}');
+                            // Navega a la nueva pantalla mostrando los detalles del producto
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductItem(product: product),
+                              ),
+                            );
                           },
                           child: Text('Ver Producto'),
                           style: ElevatedButton.styleFrom(
@@ -81,6 +90,7 @@ class SubCategoryItem extends StatelessWidget {
                 );
               },
             ),
+      drawer: SideMenu(),
     );
   }
 }

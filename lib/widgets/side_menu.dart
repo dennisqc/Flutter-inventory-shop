@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopflutter/models/product_model.dart';
+import 'package:shopflutter/page/list_product_item.dart';
 import 'package:shopflutter/widgets/sub_category_item.dart';
 import 'dart:convert';
 
@@ -87,9 +88,16 @@ class _SideMenuState extends State<SideMenu> {
             color: Colors.blueGrey[800],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(28, 20, 26, 10),
-          child: Text("Categories"),
+        ListTile(
+          title: Text("Productos"),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListProductItem(), // Pasar una lista vacía inicialmente
+              ),
+            );
+          },
         ),
         ...categories.map<Widget>((category) {
           return ExpansionTile(

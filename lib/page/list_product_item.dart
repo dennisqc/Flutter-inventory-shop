@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopflutter/api/product_select.dart';
 import 'package:shopflutter/models/product_model.dart';
+import 'package:shopflutter/page/product_item.dart';
 import 'package:shopflutter/widgets/side_menu.dart';
 
 class ListProductItem extends StatefulWidget {
@@ -65,8 +66,7 @@ class _ListProductItemState extends State<ListProductItem> {
                                   product.urlImage,
                                   fit: BoxFit.cover,
                                   width: double.infinity,
-                                  height:
-                                      150, // Ajustar la altura para agrandar la imagen
+                                  height: 150,
                                 )
                               : Icon(
                                   Icons.shopping_bag,
@@ -96,13 +96,17 @@ class _ListProductItemState extends State<ListProductItem> {
                         SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
-                            // Acción del botón, como agregar al carrito o ver detalles
-                            print('Clicked on ${product.nombre}');
+                            // Navega a la nueva pantalla mostrando los detalles del producto
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductItem(product: product),
+                              ),
+                            );
                           },
                           child: Text('Ver Producto'),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity,
-                                36), // Hacer que el botón ocupe todo el ancho
+                            minimumSize: Size(double.infinity, 36),
                           ),
                         ),
                       ],
