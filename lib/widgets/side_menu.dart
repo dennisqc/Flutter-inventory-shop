@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopflutter/models/product_model.dart';
+import 'package:shopflutter/widgets/sub_category_item.dart';
 import 'dart:convert';
 
 class SideMenu extends StatefulWidget {
@@ -35,6 +37,34 @@ class _SideMenuState extends State<SideMenu> {
     }
   }
 
+  Future<void> fetchProductsBySubcategory(int subcategoryId) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'http://10.0.2.2:5000/productos?subcategoria_id=$subcategoryId'),
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> productsJson = json.decode(response.body);
+        
+        // Convertir cada producto JSON a ProductModel
+        List<ProductModel> products = productsJson
+            .map((productJson) => ProductModel.fromJson(productJson))
+            .toList();
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SubCategoryItem(products: products),
+          ),
+        );
+      } else {
+        print('Failed to load products');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return NavigationDrawer(
@@ -46,9 +76,6 @@ class _SideMenuState extends State<SideMenu> {
       },
       children: [
         UserAccountsDrawerHeader(
-          onDetailsPressed: () {
-            print("ssss");
-          },
           currentAccountPictureSize: const Size.square(80.0),
           accountName: Text("Nombre de Usuario"),
           accountEmail: Text("usuario@correo.com"),
@@ -67,14 +94,12 @@ class _SideMenuState extends State<SideMenu> {
         ...categories.map<Widget>((category) {
           return ExpansionTile(
             title: Text(category['Nombre']),
-            // leading: Icon(Icons.category),
             children: (category['Subcategorias'] as List<dynamic>)
                 .map<Widget>((subcat) {
               return ListTile(
                 title: Text(subcat['Nombre']),
                 onTap: () {
-                  // Agrega aquí la lógica para manejar la selección de subcategoría
-                  print("Selected Subcategory: ${subcat['Nombre']}");
+                  fetchProductsBySubcategory(subcat['SubCategoriaID']);
                 },
               );
             }).toList(),
@@ -90,8 +115,6 @@ class _SideMenuState extends State<SideMenu> {
             },
             child: Text("Cerrar sesión"),
             style: ElevatedButton.styleFrom(
-              // primary: Colors.red,
-              // onPrimary: Colors.white,
               minimumSize: Size(double.infinity, 36),
             ),
           ),
