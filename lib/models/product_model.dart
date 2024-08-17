@@ -57,7 +57,7 @@ class ProductModel {
       'sku': sku,
       'urlImage': urlImage,
       'Categoria': categoria,
-      'SubCategoria': subCategoria,
+      // 'SubCategoria': subCategoria,
     };
   }
 }

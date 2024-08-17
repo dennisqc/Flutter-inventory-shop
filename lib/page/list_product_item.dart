@@ -13,6 +13,8 @@ class ListProductItem extends StatefulWidget {
 
 class _ListProductItemState extends State<ListProductItem> {
   List<ProductModel> products = [];
+  bool isLoading = true; // Añadido para controlar el estado de carga
+  bool hasError = false; // Añadido para manejar errores de carga
   final ProductSelect productService =
       ProductSelect(baseUrl: 'http://10.0.2.2:5000');
 
@@ -27,9 +29,14 @@ class _ListProductItemState extends State<ListProductItem> {
       final products = await productService.fetchProducts();
       setState(() {
         this.products = products;
+        isLoading = false;
       });
     } catch (e) {
       print('Error fetching products: $e');
+      setState(() {
+        isLoading = false;
+        hasError = true;
+      });
     }
   }
 
@@ -40,81 +47,109 @@ class _ListProductItemState extends State<ListProductItem> {
         title: Text("Inventory Page"),
         backgroundColor: Colors.blueGrey,
       ),
-      body: products.isEmpty
+      body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : GridView.builder(
-              padding: EdgeInsets.all(8),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Número de columnas en la cuadrícula
-                childAspectRatio: 0.7, // Relación de aspecto de cada elemento
-                crossAxisSpacing: 8, // Espacio horizontal entre los elementos
-                mainAxisSpacing: 8, // Espacio vertical entre los elementos
-              ),
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return Card(
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: product.urlImage.isNotEmpty
-                              ? Image.network(
-                                  product.urlImage,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: 150,
-                                )
-                              : Icon(
-                                  Icons.shopping_bag,
-                                  size: 80,
-                                  color: Colors.grey[300],
+          : hasError
+              ? Center(child: Text('Error cargando productos'))
+              : products.isEmpty
+                  ? Center(child: Text('No hay productos disponibles'))
+                  : GridView.builder(
+                      padding: EdgeInsets.all(8),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount:
+                            2, // Número de columnas en la cuadrícula
+                        childAspectRatio:
+                            0.7, // Relación de aspecto de cada elemento
+                        crossAxisSpacing:
+                            8, // Espacio horizontal entre los elementos
+                        mainAxisSpacing:
+                            8, // Espacio vertical entre los elementos
+                      ),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return Card(
+                          elevation: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: product.urlImage.isNotEmpty
+                                      ? Image.network(
+                                          product.urlImage,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: 150,
+                                          loadingBuilder:
+                                              (context, child, progress) {
+                                            if (progress == null) {
+                                              return child;
+                                            } else {
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }
+                                          },
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Icon(
+                                              Icons.shopping_bag,
+                                              size: 80,
+                                              color: Colors.grey[300],
+                                            );
+                                          },
+                                        )
+                                      : Icon(
+                                          Icons.shopping_bag,
+                                          size: 80,
+                                          color: Colors.grey[300],
+                                        ),
                                 ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          product.nombre,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                                SizedBox(height: 8),
+                                Text(
+                                  product.nombre,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  product.descripcion,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  'Price: \$${product.precioVenta.toStringAsFixed(2)}',
+                                ),
+                                SizedBox(height: 8),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Navega a la nueva pantalla mostrando los detalles del producto
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProductItem(product: product),
+                                      ),
+                                    );
+                                  },
+                                  child: Text('Ver Producto'),
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size(double.infinity, 36),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          product.descripcion,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Price: \$${product.precioVenta.toStringAsFixed(2)}',
-                        ),
-                        SizedBox(height: 8),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Navega a la nueva pantalla mostrando los detalles del producto
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductItem(product: product),
-                              ),
-                            );
-                          },
-                          child: Text('Ver Producto'),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, 36),
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
-                );
-              },
-            ),
       drawer: SideMenu(),
     );
   }

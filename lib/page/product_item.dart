@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopflutter/page/edit_item.dart';
 import 'package:shopflutter/widgets/side_menu.dart';
 import '../models/product_model.dart'; // Asegúrate de importar el modelo
 
@@ -81,7 +82,23 @@ class ProductItem extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Acción del botón, como agregar al carrito o volver
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditItem(
+                              product: product,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text('Edit'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 36),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
                         Navigator.pop(context);
                       },
                       child: Text('Back'),
@@ -95,7 +112,8 @@ class ProductItem extends StatelessWidget {
             ],
           ),
         ),
-      ),     drawer: SideMenu(),
+      ),
+      drawer: SideMenu(),
     );
   }
 }
