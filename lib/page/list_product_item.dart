@@ -99,7 +99,7 @@ class _ListProductItemState extends State<ListProductItem> {
                             // Acción del botón, como agregar al carrito o ver detalles
                             print('Clicked on ${product.nombre}');
                           },
-                          child: Text('Add to Cart'),
+                          child: Text('Ver Producto'),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(double.infinity,
                                 36), // Hacer que el botón ocupe todo el ancho

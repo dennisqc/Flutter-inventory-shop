@@ -17,10 +17,10 @@ class SubCategoryItem extends StatelessWidget {
           : GridView.builder(
               padding: EdgeInsets.all(8),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, 
-                childAspectRatio: 0.7, 
-                crossAxisSpacing: 8, 
-                mainAxisSpacing: 8, 
+                crossAxisCount: 2,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
               ),
               itemCount: products.length,
               itemBuilder: (context, index) {
@@ -70,9 +70,9 @@ class SubCategoryItem extends StatelessWidget {
                           onPressed: () {
                             print('Clicked on ${product.nombre}');
                           },
-                          child: Text('Add to Cart'),
+                          child: Text('Ver Producto'),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, 36), 
+                            minimumSize: Size(double.infinity, 36),
                           ),
                         ),
                       ],
